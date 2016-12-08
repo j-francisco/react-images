@@ -191,13 +191,33 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
-	renderImages () {
+	renderFooter () {
+		if (this.props.customFooter) {
+			return this.props.customFooter;
+		}
+
 		const {
 			currentImage,
 			images,
 			imageCountSeparator,
-			onClickImage,
 			showImageCount,
+		} = this.props;
+
+		return (
+			<Footer
+				caption={images[currentImage].caption}
+				countCurrent={currentImage + 1}
+				countSeparator={imageCountSeparator}
+				countTotal={images.length}
+				showCount={showImageCount}
+			/>
+		);
+	}
+	renderImages () {
+		const {
+			currentImage,
+			images,
+			onClickImage,
 			showThumbnails,
 		} = this.props;
 
@@ -234,13 +254,7 @@ class Lightbox extends Component {
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
 				/>
-				<Footer
-					caption={images[currentImage].caption}
-					countCurrent={currentImage + 1}
-					countSeparator={imageCountSeparator}
-					countTotal={images.length}
-					showCount={showImageCount}
-				/>
+				{this.renderFooter()}
 			</figure>
 		);
 	}
@@ -271,6 +285,7 @@ Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
+	customFooter: PropTypes.node,
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
